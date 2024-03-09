@@ -5,32 +5,92 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fancy weather</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
   <link rel="shortcut icon" href="/icons/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="./style.scss">
 </head>
 
 <body>
-  <header class="header">
+  <header class="header container">
     <div class="header__left-block">
-      <button class="header__refresh-btn">
+      <button class="header__refresh-btn btn">
         <img src="/icons/refresh.svg" alt="refresh button">
       </button>
-      <select class="header__select">
+      <select class="header__select btn">
         <option value="EN" selected>EN</option>
         <option value="RU">RU</option>
       </select>
-      <label class="header__checkbox">
-        <input type="checkbox">
-      </label>
+      <div class="header__radio">
+        <input type="radio" id="radio-one" name="radio" value="°C" checked />
+        <label for="radio-one" class="btn">°C</label>
+        <input type="radio" id="radio-two" name="radio" value="°F" />
+        <label for="radio-two" class="btn">°F</label>
+      </div>
     </div>
     <div class="header__right-block">
       <label class="header__search">
         <input type="text">
         <img src="/icons/microphone.svg" alt="microphone icon">
       </label>
-      <button class="header__search-btn">Search</button>
+      <button class="header__search-btn btn">Search</button>
     </div>
   </header>
+  <main class="main container">
+    <div class="info">
+      <h1 class="info__location">Minsk, Belarus</h1>
+      <div>
+        <div class="info__date">Mon 28 October</div>
+        <div class="info__time">17:23</div>
+      </div>
+      <div class="weather">
+        <div class="weather__icon">
+          <img src="/icons/weather.svg" alt="weather icon">
+        </div>
+        <div class="weateher__degree"><span>10</span>°</div>
+        <div class="weather__description">
+          <div class="weather__summary">overcast</div>
+          <div class="weather__apparent">Feels like: <span>7</span>°</div>
+          <div class="weather__apparent">Wind: <span>2</span>m/s</div>
+          <div class="weather__apparent">Humidity <span>83</span>%</div>
+        </div>
+      </div>
+      <div class="coming-weather">
+        <div class="coming-weather__item">
+          <div class="coming-weather__day">Tuesday</div>
+          <div>
+            <div class="coming-weather__degree">7°</div>
+            <div class="coming-weather__icon">
+              <img src="/icons/weather-small.svg" alt="weather icon">
+            </div>
+          </div>
+        </div>
+        <div class="coming-weather__item">
+          <div class="coming-weather__day">Tuesday</div>
+          <div>
+            <div class="coming-weather__degree">7°</div>
+            <div class="coming-weather__icon">
+              <img src="/icons/weather-small.svg" alt="weather icon">
+            </div>
+          </div>
+        </div>
+        <div class="coming-weather__item">
+          <div class="coming-weather__day">Tuesday</div>
+          <div>
+            <div class="coming-weather__degree">7°</div>
+            <div class="coming-weather__icon">
+              <img src="/icons/weather-small.svg" alt="weather icon">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map">
+      <div class="map__field"></div>
+      <div class="map__latitude">Latitude: <span>53°54'</span></div>
+      <div class="map__longitude">Longitude: <span>53°54'</span></div>
+    </div>
+  </main>
   <script type="module" src="/src/index.ts"></script>
 </body>
 
