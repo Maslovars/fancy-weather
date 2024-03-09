@@ -20,7 +20,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: -1;
   }
@@ -77,13 +77,13 @@ body {
       border-radius: 5px;
       overflow: hidden;
       height: 44px;
-      & input {
+      input {
         display: none;
       }
-      & label {
+      label {
         padding: 13px 15px;
       }
-      & input:checked + label {
+      input:checked + label {
         background: rgba(18, 19, 19, 0.5);
       }
     }
@@ -92,23 +92,139 @@ body {
   .header__right-block {
     display: flex;
     align-items: center;
+    position: relative;
+    .header__search {
+      input {
+        height: 44px;
+        background: rgba(18, 19, 19, 0.5);
+        border: 2px solid $bg-dark;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+        font-family: $font;
+        font-weight: 400;
+        font-size: 14px;
+        color: #fff;
+        padding: 0 15px 0 10px;
+        &::placeholder {
+          font-family: $font;
+          font-weight: 400;
+          font-size: 14px;
+          color: #fff;
+        }
+      }
+    }
+    .header__microphone {
+      position: absolute;
+      right: 115px;
+      top: 15px;
+      cursor: pointer;
+    }
+    .header__search-btn {
+      border-radius: 0 5px 5px 0;
+      padding: 0 20px;
+    }
   }
 }
 
-.map {
-  .map__field {
-    height: 400px;
-    width: 400px;
-    clip-path: polygon(
-      7% 0,
-      93% 0,
-      100% 7%,
-      100% 100%,
-      93% 88%,
-      7% 88%,
-      0% 80%,
-      0 7%
-    );
-    background-color: red;
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .info {
+    .info__location {
+      font-weight: 700;
+      font-size: 44px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .info__block {
+      display: flex;
+      gap: 18px;
+      .info__date,
+      .info__time {
+        font-weight: 600;
+        font-size: 24px;
+      }
+    }
+    .weather {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 92px;
+      .weather__icon {
+        position: absolute;
+        top: 0;
+        left: 300px;
+      }
+
+      .weateher__degree {
+        font-weight: 700;
+        font-size: 306px;
+        text-transform: uppercase;
+        position: relative;
+        span {
+          font-size: 100px;
+          position: absolute;
+          top: 50px;
+        }
+      }
+
+      .weather__description {
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 168%;
+        text-transform: uppercase;
+      }
+    }
+
+    .coming-weather {
+      display: flex;
+      gap: 50px;
+      .coming-weather__item {
+        .coming-weather__day {
+          font-weight: 700;
+          font-size: 22px;
+          text-transform: uppercase;
+          margin-bottom: 15px;
+        }
+        .coming-weather__block {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          .coming-weather__degree {
+            font-weight: 600;
+            font-size: 80px;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+
+  .map {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    .map__field {
+      height: 400px;
+      width: 400px;
+      clip-path: polygon(
+        7% 0,
+        93% 0,
+        100% 7%,
+        100% 100%,
+        93% 88%,
+        7% 88%,
+        0% 80%,
+        0 7%
+      );
+      background-color: red;
+    }
+    .map__latitude,
+    .map__longitude {
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 150%;
+    }
   }
 }

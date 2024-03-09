@@ -23,4 +23,19 @@ async function getLinkToImage() {
 
 getLinkToImage();
 
-refreshButton?.addEventListener('click', getLinkToImage);
+refreshButton!.addEventListener('click', getLinkToImage);
+
+// API KEY 66D3316E86916E3DEDD65436F5E5987D https://api.ip2location.io/?key=66D3316E86916E3DEDD65436F5E5987D&ip=37.214.55.175&format=json
+// token 7294e3d66a4e34 https://ipinfo.io?callback=callback&token=7294e3d66a4e34
+async function getLocation() {
+  try {
+    const url = 'https://ipinfo.io?token=7294e3d66a4e34';
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getLocation();
