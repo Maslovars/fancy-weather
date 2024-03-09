@@ -27,15 +27,59 @@ refreshButton!.addEventListener('click', getLinkToImage);
 
 // API KEY 66D3316E86916E3DEDD65436F5E5987D https://api.ip2location.io/?key=66D3316E86916E3DEDD65436F5E5987D&ip=37.214.55.175&format=json
 // token 7294e3d66a4e34 https://ipinfo.io?callback=callback&token=7294e3d66a4e34
+
+const h1 = document.querySelector('.info__location');
+const date = document.querySelector('.info__date');
+const time = document.querySelector('.info__time');
+
 async function getLocation() {
   try {
-    const url = 'https://ipinfo.io?token=7294e3d66a4e34';
+    const url = 'https://api.ip2location.io/';
     const res = await fetch(url);
     const data = await res.json();
     console.log(data);
+    h1!.textContent = `${data.city_name}, ${data.country_name} `;
   } catch (error) {
     console.log(error);
   }
 }
 
+function getDate() {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let day;
+  let month;
+
+  days.forEach((d, i) => {
+    if (i === new Date().getDay()) day = d;
+  });
+
+  months.forEach((m, i) => {
+    if (i === new Date().getMonth()) month = m;
+  });
+
+  date!.textContent = `${day} ${new Date().getDate()} ${month}`;
+}
+
 getLocation();
+getDate();
+setInterval(() => {
+  time!.textContent = `${new Date().getHours()}:${new Date().getMinutes()}:${
+    new Date().getSeconds() > 9
+      ? new Date().getSeconds()
+      : '0' + new Date().getSeconds()
+  }`;
+}, 1000);
