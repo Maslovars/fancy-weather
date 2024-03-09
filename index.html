@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy weather</title>
+  <link rel="shortcut icon" href="/icons/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="./style.scss">
+</head>
+
+<body>
+  <header class="header">
+    <div class="header__left-block">
+      <button class="header__refresh-btn">
+        <img src="/icons/refresh.svg" alt="refresh button">
+      </button>
+      <select class="header__select">
+        <option value="EN" selected>EN</option>
+        <option value="RU">RU</option>
+      </select>
+      <label class="header__checkbox">
+        <input type="checkbox">
+      </label>
+    </div>
+    <div class="header__right-block">
+      <label class="header__search">
+        <input type="text">
+        <img src="/icons/microphone.svg" alt="microphone icon">
+      </label>
+      <button class="header__search-btn">Search</button>
+    </div>
+  </header>
+  <script type="module" src="/src/index.ts"></script>
+</body>
+
+</html>
