@@ -9,6 +9,7 @@
     rel="stylesheet">
   <link rel="shortcut icon" href="/icons/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="./style.scss">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
 </head>
 
 <body>
@@ -43,7 +44,7 @@
       <h1 class="info__location"></h1>
       <div class="info__block">
         <div class="info__date"></div>
-        <div class="info__time">17:23</div>
+        <div class="info__time"></div>
       </div>
       <div class="weather">
         <div class="weather__icon">
@@ -88,9 +89,13 @@
       </div>
     </div>
     <div class="map">
-      <div class="map__field"></div>
-      <div class="map__latitude">Latitude: <span>53°54'</span></div>
-      <div class="map__longitude">Longitude: <span>53°54'</span></div>
+      <div class="map__field" id="map__field"></div>
+      <div class="map__latitude">Latitude:
+        <span class="map-latitude__span"></span>
+      </div>
+      <div class="map__longitude">Longitude:
+        <span class="map-longitude__span"></span>
+      </div>
     </div>
   </main>
   <script type="module" src="/src/index.ts"></script>

@@ -29,8 +29,12 @@ refreshButton!.addEventListener('click', getLinkToImage);
 // token 7294e3d66a4e34 https://ipinfo.io?callback=callback&token=7294e3d66a4e34
 
 const h1 = document.querySelector('.info__location');
+const latitude = document.querySelector('.map-latitude__span');
+const longitude = document.querySelector('.map-longitude__span');
 const date = document.querySelector('.info__date');
 const time = document.querySelector('.info__time');
+let lng: number;
+let lat: number;
 
 async function getLocation() {
   try {
@@ -39,6 +43,13 @@ async function getLocation() {
     const data = await res.json();
     console.log(data);
     h1!.textContent = `${data.city_name}, ${data.country_name} `;
+    latitude!.textContent = `${Math.floor(data.latitude)}°
+    ${data.latitude.toString().slice(3, 5)}'`;
+    lat = data.latitude;
+    longitude!.textContent = `${Math.floor(data.longitude)}°
+    ${data.longitude.toString().slice(3, 5)}'`;
+    lng = data.longitude;
+    getMap(lng, lat);
   } catch (error) {
     console.log(error);
   }
@@ -83,3 +94,17 @@ setInterval(() => {
       : '0' + new Date().getSeconds()
   }`;
 }, 1000);
+
+import mapboxgl from 'mapbox-gl';
+mapboxgl.accessToken =
+  'pk.eyJ1IjoibWFzbG92YXJzIiwiYSI6ImNrdXF5ZXV3dTJsenAyd282aHBzdTUxcHQifQ.T4fiehpdSudBKAd0wV3H2w';
+
+function getMap(lng: number, lat: number) {
+  const map = new mapboxgl.Map({
+    container: 'map__field', // container ID
+    center: [lng, lat], // starting position [lng, lat]
+    zoom: 10, // starting zoom
+  });
+}
+
+// getMap(27.56, 53.9);
