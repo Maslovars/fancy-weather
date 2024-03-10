@@ -54,6 +54,7 @@ async function getLocation() {
     getDate();
     getMap(lng, lat);
     getWeather(lng, lat);
+    getComingWeather(lng, lat);
   } catch (error) {
     console.log(error);
   }
@@ -127,17 +128,64 @@ const weatherSummary = document.querySelector('.weather__summary');
 const weatherApparent = document.querySelector('.weather__apparent span');
 const weatherWind = document.querySelector('.weather__wind span');
 const weatherHumidity = document.querySelector('.weather__humidity span');
+const comingWeather = document.querySelector('.coming-weather');
 
 async function getWeather(lng: number, lat: number) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&exclude={part}&appid=${APIkey}&units=metric&lang=${lang}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  console.log(data);
-  weatherDegree!.textContent = `${Math.round(data.main.temp)}`;
-  weatherSummary!.textContent = `${data.weather[0].main}`;
-  weatherApparent!.textContent = `${Math.round(data.main.feels_like)}`;
-  weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
-  weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&exclude={part}&appid=${APIkey}&units=metric&lang=${lang}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    // console.log(data);
+    weatherDegree!.textContent = `${Math.round(data.main.temp)}`;
+    weatherSummary!.textContent = `${data.weather[0].main}`;
+    weatherApparent!.textContent = `${Math.round(data.main.feels_like)}`;
+    weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
+    weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getComingWeather(lng: number, lat: number) {
+  const daysFull = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&cnt=30&appid=${APIkey}&units=metric&lang=${lang}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data);
+    comingWeather!.innerHTML = '';
+    data.list.forEach((el: any, ind: number) => {
+      if (ind === 8 || ind === 16 || ind === 24) {
+        console.log('day', daysFull[new Date(el.dt_txt).getDay()]);
+        console.log('dt_txt', el.dt_txt);
+        let nextDay = `
+        <div class="coming-weather__item">
+        <div class="coming-weather__day">${
+          daysFull[new Date(el.dt_txt).getDay()]
+        }</div>
+        <div class="coming-weather__block">
+          <div class="coming-weather__degree">${Math.round(el.main.temp)}°</div>
+          <div class="coming-weather__icon">
+            <img src="/icons/weather-small.svg" alt="weather icon">
+          </div>
+        </div>
+      </div>
+        `;
+        comingWeather!.innerHTML += nextDay;
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 getLocation();

@@ -14,6 +14,7 @@ body {
   position: relative;
   font-family: $font;
   color: $text;
+  height: 100vh;
   &::before {
     content: '';
     position: absolute;
