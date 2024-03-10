@@ -36,6 +36,25 @@ const time = document.querySelector('.info__time');
 let lng: number;
 let lat: number;
 let lang: string = 'en';
+let far1: number = 1;
+let far2: number = 0;
+
+const radioButtonC = document.querySelector<HTMLInputElement>('#radio-one');
+const radioButtonF = document.querySelector<HTMLInputElement>('#radio-two');
+
+radioButtonC!.addEventListener('change', () => {
+  far1 = 1;
+  far2 = 0;
+  getWeather(lng, lat);
+  getComingWeather(lng, lat);
+});
+
+radioButtonF!.addEventListener('change', () => {
+  far1 = 1.8;
+  far2 = 32;
+  getWeather(lng, lat);
+  getComingWeather(lng, lat);
+});
 
 async function getLocation() {
   try {
@@ -108,7 +127,7 @@ mapboxgl.accessToken =
 
 function getMap(lng: number, lat: number) {
   try {
-    const map = new mapboxgl.Map({
+    new mapboxgl.Map({
       container: 'map__field', // container ID
       center: [lng, lat], // starting position [lng, lat]
       zoom: 10, // starting zoom
@@ -136,9 +155,11 @@ async function getWeather(lng: number, lat: number) {
     const res = await fetch(url);
     const data = await res.json();
     // console.log(data);
-    weatherDegree!.textContent = `${Math.round(data.main.temp)}`;
+    weatherDegree!.textContent = `${Math.round(data.main.temp * far1 + far2)}`;
     weatherSummary!.textContent = `${data.weather[0].main}`;
-    weatherApparent!.textContent = `${Math.round(data.main.feels_like)}`;
+    weatherApparent!.textContent = `${Math.round(
+      data.main.feels_like * far1 + far2
+    )}`;
     weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
     weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
   } catch (error) {
@@ -165,15 +186,17 @@ async function getComingWeather(lng: number, lat: number) {
     comingWeather!.innerHTML = '';
     data.list.forEach((el: any, ind: number) => {
       if (ind === 8 || ind === 16 || ind === 24) {
-        console.log('day', daysFull[new Date(el.dt_txt).getDay()]);
-        console.log('dt_txt', el.dt_txt);
+        // console.log('day', daysFull[new Date(el.dt_txt).getDay()]);
+        // console.log('dt_txt', el.dt_txt);
         let nextDay = `
         <div class="coming-weather__item">
         <div class="coming-weather__day">${
           daysFull[new Date(el.dt_txt).getDay()]
         }</div>
         <div class="coming-weather__block">
-          <div class="coming-weather__degree">${Math.round(el.main.temp)}°</div>
+          <div class="coming-weather__degree">${Math.round(
+            el.main.temp * far1 + far2
+          )}°</div>
           <div class="coming-weather__icon">
             <img src="/icons/weather-small.svg" alt="weather icon">
           </div>
