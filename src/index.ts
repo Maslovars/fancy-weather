@@ -188,4 +188,48 @@ async function getComingWeather(lng: number, lat: number) {
   }
 }
 
+const searchButton = document.querySelector('.header__search-btn');
+const searchField = document.querySelector<HTMLInputElement>(
+  '.header__search input'
+);
+let cityName: string = '';
+
+searchField!.addEventListener('input', (e) => {
+  const target = e.target as HTMLInputElement;
+  if (target) {
+    cityName = target.value;
+    console.log('inp', target.value);
+  }
+});
+
+searchField!.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') getCityInfo();
+});
+
+async function getCityInfo() {
+  try {
+    const url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=3&appid=${APIkey}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data[0]);
+    h1!.textContent = `${data[0].local_names.en}, ${data[0].country} `;
+    latitude!.textContent = `${Math.floor(data[0].lat)}°
+    ${data[0].lat.toString().slice(3, 5)}'`;
+    lat = data[0].lat;
+    longitude!.textContent = `${Math.floor(data[0].lon)}°
+    ${data[0].lon.toString().slice(3, 5)}'`;
+    lng = data[0].lon;
+
+    getLinkToImage();
+    getDate();
+    getMap(lng, lat);
+    getWeather(lng, lat);
+    getComingWeather(lng, lat);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+searchButton!.addEventListener('click', getCityInfo);
+
 getLocation();
