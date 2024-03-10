@@ -35,6 +35,7 @@ const date = document.querySelector('.info__date');
 const time = document.querySelector('.info__time');
 let lng: number;
 let lat: number;
+let lang: string = 'en';
 
 async function getLocation() {
   try {
@@ -49,7 +50,10 @@ async function getLocation() {
     longitude!.textContent = `${Math.floor(data.longitude)}°
     ${data.longitude.toString().slice(3, 5)}'`;
     lng = data.longitude;
+
+    getDate();
     getMap(lng, lat);
+    getWeather(lng, lat);
   } catch (error) {
     console.log(error);
   }
@@ -85,10 +89,12 @@ function getDate() {
   date!.textContent = `${day} ${new Date().getDate()} ${month}`;
 }
 
-getLocation();
-getDate();
 setInterval(() => {
-  time!.textContent = `${new Date().getHours()}:${new Date().getMinutes()}:${
+  time!.textContent = `${new Date().getHours()}:${
+    new Date().getMinutes() > 9
+      ? new Date().getMinutes()
+      : '0' + new Date().getMinutes()
+  }:${
     new Date().getSeconds() > 9
       ? new Date().getSeconds()
       : '0' + new Date().getSeconds()
@@ -100,11 +106,38 @@ mapboxgl.accessToken =
   'pk.eyJ1IjoibWFzbG92YXJzIiwiYSI6ImNrdXF5ZXV3dTJsenAyd282aHBzdTUxcHQifQ.T4fiehpdSudBKAd0wV3H2w';
 
 function getMap(lng: number, lat: number) {
-  const map = new mapboxgl.Map({
-    container: 'map__field', // container ID
-    center: [lng, lat], // starting position [lng, lat]
-    zoom: 10, // starting zoom
-  });
+  try {
+    const map = new mapboxgl.Map({
+      container: 'map__field', // container ID
+      center: [lng, lat], // starting position [lng, lat]
+      zoom: 10, // starting zoom
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // getMap(27.56, 53.9);
+
+// open weather 0641c3106fa3d3fa016ec560e68435c1
+
+const APIkey = '0641c3106fa3d3fa016ec560e68435c1';
+const weatherDegree = document.querySelector('.weateher-degree__number');
+const weatherSummary = document.querySelector('.weather__summary');
+const weatherApparent = document.querySelector('.weather__apparent span');
+const weatherWind = document.querySelector('.weather__wind span');
+const weatherHumidity = document.querySelector('.weather__humidity span');
+
+async function getWeather(lng: number, lat: number) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&exclude={part}&appid=${APIkey}&units=metric&lang=${lang}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  console.log(data);
+  weatherDegree!.textContent = `${Math.round(data.main.temp)}`;
+  weatherSummary!.textContent = `${data.weather[0].main}`;
+  weatherApparent!.textContent = `${Math.round(data.main.feels_like)}`;
+  weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
+  weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
+}
+
+getLocation();
