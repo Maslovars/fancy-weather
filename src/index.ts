@@ -1,43 +1,15 @@
-const body = document.body;
-const refreshButton = document.querySelector('.header__refresh-btn');
-// Key: e603766b06c2db59dbb2b28734620817
+import { getCityInfo } from './API/getCityInfo';
+import { getComingWeather } from './API/getComingWeather';
+import { getLinkToImage } from './API/getImage';
+import { getLocationInfo } from './API/getLocationInfo';
+import { getWeather } from './API/getWeather';
 
-async function getLinkToImage() {
-  try {
-    const randomNumber = Math.floor(Math.random() * 100);
-    const url =
-      'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=e603766b06c2db59dbb2b28734620817&tags=nature,spring,morning&tag_mode=all&extras=url_h&format=json&nojsoncallback=1';
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log('pic', data.photos.photo[randomNumber].url_h);
-    if (data.photos.photo[randomNumber].url_h) {
-      body.style.background = `url(${data.photos.photo[randomNumber].url_h}) no-repeat`;
-    } else {
-      body.style.background = `url(${data.photos.photo[1].url_h}) no-repeat`;
-    }
-    body.style.backgroundSize = 'cover';
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-getLinkToImage();
-
-refreshButton!.addEventListener('click', getLinkToImage);
-
-// API KEY 66D3316E86916E3DEDD65436F5E5987D https://api.ip2location.io/?key=66D3316E86916E3DEDD65436F5E5987D&ip=37.214.55.175&format=json
-// token 7294e3d66a4e34 https://ipinfo.io?callback=callback&token=7294e3d66a4e34
-
-const h1 = document.querySelector('.info__location');
-const latitude = document.querySelector('.map-latitude__span');
-const longitude = document.querySelector('.map-longitude__span');
-const date = document.querySelector('.info__date');
-const time = document.querySelector('.info__time');
-let lng: number;
-let lat: number;
+let lng: number = 0;
+let lat: number = 0;
 let lang: string = 'en';
 let far1: number = 1;
 let far2: number = 0;
+let cityName: string = '';
 
 const radioButtonC = document.querySelector<HTMLInputElement>('#radio-one');
 const radioButtonF = document.querySelector<HTMLInputElement>('#radio-two');
@@ -45,177 +17,27 @@ const radioButtonF = document.querySelector<HTMLInputElement>('#radio-two');
 radioButtonC!.addEventListener('change', () => {
   far1 = 1;
   far2 = 0;
-  getWeather(lng, lat);
-  getComingWeather(lng, lat);
+  getWeather(lng, lat, far1, far2, lang);
+  getComingWeather(lng, lat, far1, far2, lang);
 });
 
 radioButtonF!.addEventListener('change', () => {
   far1 = 1.8;
   far2 = 32;
-  getWeather(lng, lat);
-  getComingWeather(lng, lat);
+  getWeather(lng, lat, far1, far2, lang);
+  getComingWeather(lng, lat, far1, far2, lang);
 });
 
-async function getLocation() {
-  try {
-    const url = 'https://api.ip2location.io/';
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data);
-    h1!.textContent = `${data.city_name}, ${data.country_name} `;
-    latitude!.textContent = `${Math.floor(data.latitude)}°
-    ${data.latitude.toString().slice(3, 5)}'`;
-    lat = data.latitude;
-    longitude!.textContent = `${Math.floor(data.longitude)}°
-    ${data.longitude.toString().slice(3, 5)}'`;
-    lng = data.longitude;
+const refreshButton = document.querySelector('.header__refresh-btn');
 
-    getDate();
-    getMap(lng, lat);
-    getWeather(lng, lat);
-    getComingWeather(lng, lat);
-  } catch (error) {
-    console.log(error);
-  }
-}
+getLinkToImage();
 
-function getDate() {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  let day;
-  let month;
-
-  days.forEach((d, i) => {
-    if (i === new Date().getDay()) day = d;
-  });
-
-  months.forEach((m, i) => {
-    if (i === new Date().getMonth()) month = m;
-  });
-
-  date!.textContent = `${day} ${new Date().getDate()} ${month}`;
-}
-
-setInterval(() => {
-  time!.textContent = `${new Date().getHours()}:${
-    new Date().getMinutes() > 9
-      ? new Date().getMinutes()
-      : '0' + new Date().getMinutes()
-  }:${
-    new Date().getSeconds() > 9
-      ? new Date().getSeconds()
-      : '0' + new Date().getSeconds()
-  }`;
-}, 1000);
-
-import mapboxgl from 'mapbox-gl';
-mapboxgl.accessToken =
-  'pk.eyJ1IjoibWFzbG92YXJzIiwiYSI6ImNrdXF5ZXV3dTJsenAyd282aHBzdTUxcHQifQ.T4fiehpdSudBKAd0wV3H2w';
-
-function getMap(lng: number, lat: number) {
-  try {
-    new mapboxgl.Map({
-      container: 'map__field', // container ID
-      center: [lng, lat], // starting position [lng, lat]
-      zoom: 10, // starting zoom
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// getMap(27.56, 53.9);
-
-// open weather 0641c3106fa3d3fa016ec560e68435c1
-
-const APIkey = '0641c3106fa3d3fa016ec560e68435c1';
-const weatherDegree = document.querySelector('.weateher-degree__number');
-const weatherSummary = document.querySelector('.weather__summary');
-const weatherApparent = document.querySelector('.weather__apparent span');
-const weatherWind = document.querySelector('.weather__wind span');
-const weatherHumidity = document.querySelector('.weather__humidity span');
-const comingWeather = document.querySelector('.coming-weather');
-
-async function getWeather(lng: number, lat: number) {
-  try {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&exclude={part}&appid=${APIkey}&units=metric&lang=${lang}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    // console.log(data);
-    weatherDegree!.textContent = `${Math.round(data.main.temp * far1 + far2)}`;
-    weatherSummary!.textContent = `${data.weather[0].main}`;
-    weatherApparent!.textContent = `${Math.round(
-      data.main.feels_like * far1 + far2
-    )}`;
-    weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
-    weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function getComingWeather(lng: number, lat: number) {
-  const daysFull = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-
-  try {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&cnt=30&appid=${APIkey}&units=metric&lang=${lang}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data);
-    comingWeather!.innerHTML = '';
-    data.list.forEach((el: any, ind: number) => {
-      if (ind === 8 || ind === 16 || ind === 24) {
-        // console.log('day', daysFull[new Date(el.dt_txt).getDay()]);
-        // console.log('dt_txt', el.dt_txt);
-        let nextDay = `
-        <div class="coming-weather__item">
-        <div class="coming-weather__day">${
-          daysFull[new Date(el.dt_txt).getDay()]
-        }</div>
-        <div class="coming-weather__block">
-          <div class="coming-weather__degree">${Math.round(
-            el.main.temp * far1 + far2
-          )}°</div>
-          <div class="coming-weather__icon">
-            <img src="/icons/weather-small.svg" alt="weather icon">
-          </div>
-        </div>
-      </div>
-        `;
-        comingWeather!.innerHTML += nextDay;
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
+refreshButton!.addEventListener('click', getLinkToImage);
 
 const searchButton = document.querySelector('.header__search-btn');
 const searchField = document.querySelector<HTMLInputElement>(
   '.header__search input'
 );
-let cityName: string = '';
 
 searchField!.addEventListener('input', (e) => {
   const target = e.target as HTMLInputElement;
@@ -226,33 +48,11 @@ searchField!.addEventListener('input', (e) => {
 });
 
 searchField!.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') getCityInfo();
+  if (e.key === 'Enter') getCityInfo(cityName, lng, lat, far1, far2, lang);
 });
 
-async function getCityInfo() {
-  try {
-    const url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=3&appid=${APIkey}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data[0]);
-    h1!.textContent = `${data[0].local_names.en}, ${data[0].country} `;
-    latitude!.textContent = `${Math.floor(data[0].lat)}°
-    ${data[0].lat.toString().slice(3, 5)}'`;
-    lat = data[0].lat;
-    longitude!.textContent = `${Math.floor(data[0].lon)}°
-    ${data[0].lon.toString().slice(3, 5)}'`;
-    lng = data[0].lon;
+searchButton!.addEventListener('click', () => {
+  getCityInfo(cityName, lng, lat, far1, far2, lang);
+});
 
-    getLinkToImage();
-    getDate();
-    getMap(lng, lat);
-    getWeather(lng, lat);
-    getComingWeather(lng, lat);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-searchButton!.addEventListener('click', getCityInfo);
-
-getLocation();
+getLocationInfo(lng, lat, far1, far2, lang);

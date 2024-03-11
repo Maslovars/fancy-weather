@@ -156,21 +156,23 @@ body {
       display: flex;
       align-items: center;
       gap: 92px;
+      padding-top: 20px;
       .weather__icon {
         position: absolute;
         top: 0;
-        left: 300px;
+        right: 150px;
+        z-index: -1;
       }
 
       .weateher__degree {
         font-weight: 700;
-        font-size: 306px;
+        font-size: 256px;
         text-transform: uppercase;
         position: relative;
         .weateher-degree__span {
           font-size: 100px;
           position: absolute;
-          top: 50px;
+          top: 40px;
         }
       }
 
@@ -198,7 +200,7 @@ body {
           align-items: center;
           .coming-weather__degree {
             font-weight: 600;
-            font-size: 80px;
+            font-size: 65px;
             text-transform: uppercase;
           }
         }
