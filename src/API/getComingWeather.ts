@@ -44,7 +44,6 @@ export async function getComingWeather(
       </div>
         `;
         comingWeather!.innerHTML += nextDay;
-        console.log('cweath', Math.round(el.main.temp * far1 + far2));
       }
     });
   } catch (error) {

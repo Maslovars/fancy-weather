@@ -6,46 +6,63 @@ import { getWeather } from './API/getWeather';
 
 let lng: number = 0;
 let lat: number = 0;
-let lang: string = 'en';
-// let far1: number = Number(localStorage.getItem('far1')) || 1;
-// let far2: number = Number(localStorage.getItem('far2')) || 0;
-let far1: number = 1;
-let far2: number = 0;
-let scale: string = 'C';
+let lang: string = localStorage.getItem('lang') || 'en';
+let far1: number = Number(localStorage.getItem('far1')) || 1;
+let far2: number = Number(localStorage.getItem('far2')) || 0;
+let scale: string = localStorage.getItem('scale') || 'C';
 let cityName: string = '';
+
+export function setLocation(longitude: number, latitude: number) {
+  lng = longitude;
+  lat = latitude;
+}
 
 const radioButtonC = document.querySelector<HTMLInputElement>('#radio-one');
 const radioButtonF = document.querySelector<HTMLInputElement>('#radio-two');
+const radioButtons = document.querySelectorAll<HTMLInputElement>(
+  '.header__radio input'
+);
 const refreshButton = document.querySelector('.header__refresh-btn');
 const searchButton = document.querySelector('.header__search-btn');
 const searchField = document.querySelector<HTMLInputElement>(
   '.header__search input'
 );
+const selectLang = document.querySelector(
+  '.header__select'
+) as HTMLSelectElement;
 
-const weatherDegree = document.querySelector('.weateher-degree__number');
-const weatherApparent = document.querySelector('.weather__apparent span');
+selectLang!.value = lang;
+selectLang!.addEventListener('change', SaveSelectValue);
+
+function SaveSelectValue(e: Event) {
+  let target = e.target as HTMLOptionElement;
+  localStorage.setItem('lang', target.value);
+}
+
+for (let i = 0; i < radioButtons!.length; i++) {
+  if (radioButtons[i].value === scale) {
+    radioButtons[i].checked = true;
+  }
+}
 
 radioButtonC!.addEventListener('change', () => {
-  // localStorage.setItem('far1', '1');
-  // localStorage.setItem('far2', '0');
-  console.log('11', weatherDegree!.innerHTML);
-  // weatherDegree!.textContent = ``;
+  localStorage.setItem('far1', '1');
+  localStorage.setItem('far2', '0');
   far1 = 1;
   far2 = 0;
+  localStorage.setItem('scale', 'C');
   getWeather(lng, lat, far1, far2, lang);
   getComingWeather(lng, lat, far1, far2, lang);
-  // console.log('C', far1, far2);
 });
 
 radioButtonF!.addEventListener('change', () => {
-  // localStorage.setItem('far1', '1.8');
-  // localStorage.setItem('far2', '32');
-  console.log('22', weatherDegree!.innerHTML);
+  localStorage.setItem('far1', '1.8');
+  localStorage.setItem('far2', '32');
   far1 = 1.8;
   far2 = 32;
+  localStorage.setItem('scale', 'F');
   getWeather(lng, lat, far1, far2, lang);
   getComingWeather(lng, lat, far1, far2, lang);
-  // console.log('F', far1, far2);
 });
 
 refreshButton!.addEventListener('click', getLinkToImage);
@@ -54,7 +71,7 @@ searchField!.addEventListener('input', (e) => {
   const target = e.target as HTMLInputElement;
   if (target) {
     cityName = target.value;
-    console.log('inp', target.value);
+    // console.log('inp', target.value);
   }
 });
 

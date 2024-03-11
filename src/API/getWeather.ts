@@ -15,7 +15,7 @@ export async function getWeather(
   lang: string
 ) {
   try {
-    console.log('weather', far1, far2);
+    console.log('weather', far1, far2, lng, lat);
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&exclude={part}&appid=${APIkey}&units=metric&lang=${lang}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -27,13 +27,6 @@ export async function getWeather(
     )}`;
     weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
     weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
-    // console.log(
-    //   'weather',
-    //   far1,
-    //   far2,
-    //   Math.round(data.main.temp * far1 + far2),
-    //   Math.round(data.main.feels_like * far1 + far2)
-    // );
   } catch (error) {
     console.log(error);
   }

@@ -3,6 +3,7 @@ import { getDate } from './getDate';
 import { getMap } from './getMap';
 import { getTime } from './getTime';
 import { getWeather } from './getWeather';
+import { setLocation } from '../index';
 
 // API KEY 66D3316E86916E3DEDD65436F5E5987D https://api.ip2location.io/?key=66D3316E86916E3DEDD65436F5E5987D&ip=37.214.55.175&format=json
 // token 7294e3d66a4e34 https://ipinfo.io?callback=callback&token=7294e3d66a4e34
@@ -25,12 +26,21 @@ export async function getLocationInfo(
     console.log(data);
     h1!.textContent = `${data.city_name}, ${data.country_name} `;
     latitude!.textContent = `${Math.floor(data.latitude)}°
-    ${data.latitude.toString().slice(3, 5)}'`;
+    ${
+      Array.from(data.latitude.toString())[0] === '-'
+        ? data.latitude.toString().slice(4, 6)
+        : data.latitude.toString().slice(3, 5)
+    }'`;
     lat = data.latitude;
     longitude!.textContent = `${Math.floor(data.longitude)}°
-    ${data.longitude.toString().slice(3, 5)}'`;
+    ${
+      Array.from(data.longitude.toString())[0] === '-'
+        ? data.longitude.toString().slice(4, 6)
+        : data.longitude.toString().slice(3, 5)
+    }'`;
     lng = data.longitude;
 
+    setLocation(lng, lat);
     getDate();
     getTime();
     getMap(lng, lat);

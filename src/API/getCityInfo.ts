@@ -3,6 +3,7 @@ import { getDate } from './getDate';
 import { getLinkToImage } from './getImage';
 import { getMap } from './getMap';
 import { getWeather } from './getWeather';
+import { setLocation } from '../index';
 
 const APIkey = '0641c3106fa3d3fa016ec560e68435c1';
 const h1 = document.querySelector('.info__location');
@@ -22,14 +23,26 @@ export async function getCityInfo(
     const res = await fetch(url);
     const data = await res.json();
     console.log(data[0]);
-    h1!.textContent = `${data[0].local_names.en}, ${data[0].country} `;
+    // console.log('123', Array.from(data[0].lon.toString())[0]);
+    h1!.textContent = `${
+      lang === 'en' ? data[0].local_names.en : data[0].local_names.ru
+    }, ${data[0].country} `;
     latitude!.textContent = `${Math.floor(data[0].lat)}°
-    ${data[0].lat.toString().slice(3, 5)}'`;
+    ${
+      Array.from(data[0].lat.toString())[0] === '-'
+        ? data[0].lat.toString().slice(4, 6)
+        : data[0].lat.toString().slice(3, 5)
+    }'`;
     lat = data[0].lat;
     longitude!.textContent = `${Math.floor(data[0].lon)}°
-    ${data[0].lon.toString().slice(3, 5)}'`;
+    ${
+      Array.from(data[0].lon.toString())[0] === '-'
+        ? data[0].lon.toString().slice(4, 6)
+        : data[0].lon.toString().slice(3, 5)
+    }'`;
     lng = data[0].lon;
 
+    setLocation(lng, lat);
     getLinkToImage();
     getDate();
     getMap(lng, lat);
