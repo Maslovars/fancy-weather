@@ -15,10 +15,11 @@ export async function getWeather(
   lang: string
 ) {
   try {
+    console.log('weather', far1, far2);
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&exclude={part}&appid=${APIkey}&units=metric&lang=${lang}`;
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data);
+    console.log(data);
     weatherDegree!.textContent = `${Math.round(data.main.temp * far1 + far2)}`;
     weatherSummary!.textContent = `${data.weather[0].main}`;
     weatherApparent!.textContent = `${Math.round(
@@ -26,6 +27,13 @@ export async function getWeather(
     )}`;
     weatherWind!.textContent = `${Math.round(data.wind.speed)}`;
     weatherHumidity!.textContent = `${Math.round(data.main.humidity)}`;
+    // console.log(
+    //   'weather',
+    //   far1,
+    //   far2,
+    //   Math.round(data.main.temp * far1 + far2),
+    //   Math.round(data.main.feels_like * far1 + far2)
+    // );
   } catch (error) {
     console.log(error);
   }

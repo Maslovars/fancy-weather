@@ -22,7 +22,7 @@ export async function getComingWeather(
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&cnt=30&appid=${APIkey}&units=metric&lang=${lang}`;
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     comingWeather!.innerHTML = '';
     data.list.forEach((el: any, ind: number) => {
       if (ind === 8 || ind === 16 || ind === 24) {
@@ -44,6 +44,7 @@ export async function getComingWeather(
       </div>
         `;
         comingWeather!.innerHTML += nextDay;
+        console.log('cweath', Math.round(el.main.temp * far1 + far2));
       }
     });
   } catch (error) {
