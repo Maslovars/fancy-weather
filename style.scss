@@ -234,3 +234,186 @@ body {
     }
   }
 }
+
+@media (max-width: 1200px) {
+  .main {
+    justify-content: center;
+    gap: 100px;
+    .info {
+      .info__location {
+        font-size: 34px;
+      }
+      .info__block {
+        .info__date,
+        .info__time {
+          font-size: 20px;
+        }
+      }
+      .weather {
+        padding-top: 30px;
+        .weather__icon {
+          img {
+            max-width: 130px;
+          }
+        }
+        .weateher__degree {
+          font-size: 170px;
+          .weateher-degree__span {
+            top: 20px;
+          }
+        }
+        .weather__description {
+          font-size: 18px;
+          line-height: 150%;
+        }
+      }
+      .coming-weather {
+        gap: 30px;
+        .coming-weather__item {
+          .coming-weather__day {
+            font-size: 18px;
+          }
+          .coming-weather__block {
+            .coming-weather__degree {
+              font-size: 40px;
+            }
+          }
+        }
+      }
+    }
+
+    .map {
+      .map__field {
+        height: 350px;
+        width: 350px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 40px;
+  }
+  .header {
+    justify-content: center;
+    gap: 50px;
+  }
+  .main {
+    gap: 50px;
+    .info {
+      .info__location {
+        text-align: center;
+        font-size: 38px;
+      }
+      .info__block {
+        justify-content: center;
+        .info__date,
+        .info__time {
+          font-size: 20px;
+        }
+      }
+      .weather {
+        justify-content: space-around;
+        gap: 60px;
+        .weather__icon {
+          img {
+            max-width: 100px;
+          }
+        }
+        .weateher__degree {
+          font-size: 150px;
+          .weateher-degree__span {
+            top: 12px;
+          }
+        }
+      }
+      .coming-weather {
+        gap: 20px;
+        .coming-weather__item {
+          .coming-weather__day {
+            font-size: 16px;
+          }
+          .coming-weather__block {
+            .coming-weather__degree {
+              font-size: 30px;
+            }
+            .coming-weather__icon {
+              img {
+                max-width: 50px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .map {
+      .map__latitude,
+      .map__longitude {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .container {
+    padding: 10px 20px;
+  }
+  .header {
+    .header__right-block {
+      .header__search {
+        input {
+          padding: 0 30px 0 5px;
+        }
+      }
+    }
+  }
+  .main {
+    .info {
+      .info__location {
+        font-size: 28px;
+      }
+      .info__block {
+        .info__date,
+        .info__time {
+          font-size: 18px;
+        }
+      }
+      .weather {
+        gap: 30px;
+        .weather__icon {
+          right: 100px;
+          img {
+            max-width: 100px;
+          }
+        }
+      }
+      .coming-weather {
+        gap: 15px;
+        .coming-weather__item {
+          .coming-weather__day {
+            font-size: 14px;
+          }
+          .coming-weather__block {
+            .coming-weather__degree {
+              font-size: 24px;
+            }
+            .coming-weather__icon {
+              img {
+                max-width: 40px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .map {
+      .map__field {
+        height: 275px;
+        width: 275px;
+      }
+    }
+  }
+}
