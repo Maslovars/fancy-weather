@@ -1,6 +1,42 @@
 const comingWeather = document.querySelector('.coming-weather');
 const APIkey = '0641c3106fa3d3fa016ec560e68435c1';
 
+interface IElement {
+  clouds: {
+    all: number;
+  };
+  dt: number;
+  dt_txt: string;
+  main: {
+    feels_like: number;
+    grnd_level: number;
+    humidity: number;
+    pressure: number;
+    sea_level: number;
+    temp: number;
+    temp_kf: number;
+    temp_max: number;
+    temp_min: number;
+  };
+  pop: number;
+  sys: {
+    pod: string;
+  };
+  weather: {
+    0: {
+      description: string;
+      icon: string;
+      id: number;
+      main: string;
+    };
+  };
+  wind: {
+    deg: number;
+    gust: number;
+    speed: number;
+  };
+}
+
 export async function getComingWeather(
   lng: number,
   lat: number,
@@ -22,20 +58,21 @@ export async function getComingWeather(
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&cnt=30&appid=${APIkey}&units=metric&lang=${lang}`;
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data);
+    console.log('data', data);
+    // console.log('list', data.list[0]);
     comingWeather!.innerHTML = '';
-    data.list.forEach((el: any, ind: number) => {
+    data.list.forEach((el: Partial<IElement>, ind: number) => {
       if (ind === 8 || ind === 16 || ind === 24) {
         // console.log('day', daysFull[new Date(el.dt_txt).getDay()]);
         // console.log('dt_txt', el.dt_txt);
         let nextDay = `
         <div class="coming-weather__item">
         <div class="coming-weather__day">${
-          daysFull[new Date(el.dt_txt).getDay()]
+          el.dt_txt && daysFull[new Date(el.dt_txt).getDay()]
         }</div>
         <div class="coming-weather__block">
           <div class="coming-weather__degree">${Math.round(
-            el.main.temp * far1 + far2
+            el!.main!.temp * far1 + far2
           )}°</div>
           <div class="coming-weather__icon">
             <img src="/icons/weather-small.svg" alt="weather icon">

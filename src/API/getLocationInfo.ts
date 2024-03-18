@@ -42,7 +42,7 @@ export async function getLocationInfo(
 
     setLocation(lng, lat);
     getDate();
-    getTime();
+    getTime(true);
     getMap(lng, lat);
     getWeather(lng, lat, far1, far2, lang);
     getComingWeather(lng, lat, far1, far2, lang);

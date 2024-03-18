@@ -1,9 +1,10 @@
 import { getComingWeather } from './getComingWeather';
-import { getDate } from './getDate';
 import { getLinkToImage } from './getImage';
 import { getMap } from './getMap';
 import { getWeather } from './getWeather';
 import { setLocation } from '../index';
+import { setTime } from './setTime';
+import { getTime } from './getTime';
 
 const APIkey = '0641c3106fa3d3fa016ec560e68435c1';
 const h1 = document.querySelector('.info__location');
@@ -22,7 +23,7 @@ export async function getCityInfo(
     const url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=3&appid=${APIkey}`;
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data[0]);
+    console.log('city', data[0]);
     // console.log('123', Array.from(data[0].lon.toString())[0]);
     h1!.textContent = `${
       lang === 'en' ? data[0].local_names.en : data[0].local_names.ru
@@ -42,9 +43,11 @@ export async function getCityInfo(
     }'`;
     lng = data[0].lon;
 
+    setTime(lng, lat);
     setLocation(lng, lat);
     getLinkToImage();
-    getDate();
+    getTime(false);
+    setTime(lng, lat);
     getMap(lng, lat);
     getWeather(lng, lat, far1, far2, lang);
     getComingWeather(lng, lat, far1, far2, lang);

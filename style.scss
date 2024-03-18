@@ -382,10 +382,17 @@ body {
       }
       .weather {
         gap: 30px;
+        padding-top: 50px;
         .weather__icon {
           right: 100px;
           img {
             max-width: 100px;
+          }
+        }
+        .weateher__degree {
+          font-size: 100px;
+          .weateher-degree__span {
+            font-size: 60px;
           }
         }
       }
